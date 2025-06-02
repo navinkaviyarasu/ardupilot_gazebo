@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <!-- Load sun light -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Load default ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Load your viper model -->
+    <include>
+      <uri>model://viper</uri>
+      <name>viper</name>
+      <pose>0 0 0.15 0 0 0</pose> <!-- Adjust as needed -->
+    </include>
+  </world>
+</sdf>

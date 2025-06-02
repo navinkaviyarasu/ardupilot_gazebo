@@ -1,0 +1,194 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="viper">
+    <static>false</static>
+
+    <!-- Main Rocket Body -->
+    <link name="base_link">
+      <pose>0 0 0.2 0 0 0</pose>
+
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100.0</update_rate>
+        <visualize>true</visualize>
+        <imu>
+          <angular_velocity><x>true</x><y>true</y><z>true</z></angular_velocity>
+          <linear_acceleration><x>true</x><y>true</y><z>true</z></linear_acceleration>
+        </imu>
+      </sensor>
+
+      <visual name="body_visual">
+        <geometry><cylinder><radius>0.05</radius><length>0.3</length></cylinder></geometry>
+        <material><ambient>0.8 0.1 0.1 1</ambient></material>
+      </visual>
+
+      <collision name="body_collision">
+        <geometry><cylinder><radius>0.05</radius><length>0.3</length></cylinder></geometry>
+      </collision>
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia><ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz></inertia>
+      </inertial>
+    </link>
+
+    <!-- TVC Pitch Joint -->
+    <joint name="tvc_pitch_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>tvc_pitch</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit><lower>-0.5</lower><upper>0.5</upper></limit>
+      </axis>
+    </joint>
+
+    <link name="tvc_pitch">
+      <inertial>
+        <mass>0.1</mass>
+        <inertia><ixx>1e-5</ixx><iyy>1e-5</iyy><izz>1e-5</izz></inertia>
+      </inertial>
+    </link>
+
+    <!-- TVC Roll Joint -->
+    <joint name="tvc_roll_joint" type="revolute">
+      <parent>tvc_pitch</parent>
+      <child>motor_mount</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit><lower>-0.5</lower><upper>0.5</upper></limit>
+      </axis>
+    </joint>
+
+    <!-- Motor Mount -->
+    <link name="motor_mount">
+      <pose>0 0 -0.15 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia><ixx>1e-5</ixx><iyy>1e-5</iyy><izz>1e-5</izz></inertia>
+      </inertial>
+    </link>
+
+    <!-- CCW Motor + Propeller -->
+    <link name="ccw_motor">
+      <pose>-0.015 0 -0.02 0 0 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia>
+      </inertial>
+      <visual name="ccw_propeller">
+        <geometry><cylinder><radius>0.03</radius><length>0.005</length></cylinder></geometry>
+        <material><ambient>0 0 1 1</ambient></material>
+      </visual>
+      <plugin name="ccw_motor_plugin" filename="libgazebo_motor_model.so">
+        <robotNamespace/>
+        <commandSubTopic>ccw_motor_command</commandSubTopic>
+        <linkName>ccw_motor</linkName>
+        <turningDirection>ccw</turningDirection>
+        <inputIndex>0</inputIndex>
+      </plugin>
+    </link>
+    <joint name="ccw_motor_joint" type="fixed">
+      <parent>motor_mount</parent>
+      <child>ccw_motor</child>
+    </joint>
+
+    <!-- CW Motor + Propeller -->
+    <link name="cw_motor">
+      <pose>0.015 0 -0.02 0 0 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia>
+      </inertial>
+      <visual name="cw_propeller">
+        <geometry><cylinder><radius>0.03</radius><length>0.005</length></cylinder></geometry>
+        <material><ambient>0 1 0 1</ambient></material>
+      </visual>
+      <plugin name="cw_motor_plugin" filename="libgazebo_motor_model.so">
+        <robotNamespace/>
+        <commandSubTopic>cw_motor_command</commandSubTopic>
+        <linkName>cw_motor</linkName>
+        <turningDirection>cw</turningDirection>
+        <inputIndex>1</inputIndex>
+      </plugin>
+    </link>
+    <joint name="cw_motor_joint" type="fixed">
+      <parent>motor_mount</parent>
+      <child>cw_motor</child>
+    </joint>
+
+    <!-- Landing Legs -->
+    <link name="leg_0">
+      <pose>0.07 0 0 0 0 0</pose>
+      <visual name="leg_0_visual">
+        <geometry><box><size>0.01 0.01 0.05</size></box></geometry></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient></material>
+      </visual>
+    </link>
+    <joint name="leg_0_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>leg_0</child>
+    </joint>
+
+    <link name="leg_1">
+      <pose>0 -0.07 0 0 0 0</pose>
+      <visual name="leg_1_visual">
+        <geometry><box><size>0.01 0.01 0.05</size></box></geometry></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient></material>
+      </visual>
+    </link>
+    <joint name="leg_1_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>leg_1</child>
+    </joint>
+
+    <link name="leg_2">
+      <pose>-0.07 0 0 0 0 0</pose>
+      <visual name="leg_2_visual">
+        <geometry><box><size>0.01 0.01 0.05</size></box></geometry></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient></material>
+      </visual>
+    </link>
+    <joint name="leg_2_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>leg_2</child>
+    </joint>
+
+    <link name="leg_3">
+      <pose>0 0.07 0 0 0 0</pose>
+      <visual name="leg_3_visual">
+        <geometry><box><size>0.01 0.01 0.05</size></box></geometry></geometry>
+        <material><ambient>0.4 0.4 0.4 1</ambient></material>
+      </visual>
+    </link>
+    <joint name="leg_3_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>leg_3</child>
+    </joint>
+
+    <!-- ArduPilot Plugin -->
+    <plugin name="ardupilot_plugin" filename="libArduPilotPlugin.so">
+      <robotNamespace/>
+      <linkName>motor_mount</linkName>
+
+      <motor>
+        <channel>3</channel>
+        <jointControl>false</jointControl>
+        <inputIndex>0</inputIndex>
+      </motor>
+      <motor>
+        <channel>4</channel>
+        <jointControl>false</jointControl>
+        <inputIndex>1</inputIndex>
+      </motor>
+      <servo>
+        <channel>1</channel>
+        <jointName>tvc_roll_joint</jointName>
+      </servo>
+      <servo>
+        <channel>2</channel>
+        <jointName>tvc_pitch_joint</jointName>
+      </servo>
+    </plugin>
+
+  </model>
+</sdf>
