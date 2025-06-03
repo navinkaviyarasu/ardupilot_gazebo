@@ -111,17 +111,6 @@
         </material>
       </visual>
 
-      <!-- <sensor name="imu_sensor" type="imu">
-        <pose>0 0 0 0 0 0</pose>
-        <always_on>true</always_on>
-        <update_rate>100.0</update_rate>
-        <visualize>true</visualize>
-        <imu>
-          <angular_velocity><x>true</x><y>true</y><z>true</z></angular_velocity>
-          <linear_acceleration><x>true</x><y>true</y><z>true</z></linear_acceleration>
-        </imu>
-      </sensor> -->
-
     </link>
 
     <link name='viper/imu_link'>
@@ -392,44 +381,6 @@
       </physics>
     </joint>
 
-
-<!-- The below plugin is only available for PX4 SITL -->
-<!-- For Gazebo11, libLiftDragPlugin.so is only way to model the motor and thrust componenets -->
-    <!-- <plugin name='top_motor' filename='libgazebo_motor_model.so'>
-      <robotNamespace/>
-      <jointName>rotor_0_joint</jointName>
-      <linkName>rotor_0</linkName>
-      <motorSpeedPubTopic>/motor_speed/2</motorSpeedPubTopic>
-      <motorNumber>2</motorNumber>
-      <turningDirection>ccw</turningDirection>
-      <timeConstantUp>0.0125</timeConstantUp>
-      <timeConstantDown>0.025</timeConstantDown>
-      <maxRotVelocity>3000</maxRotVelocity>
-      <motorConstant>2.9265e-07</motorConstant>
-      <momentConstant>8.8e-3</momentConstant>
-      <rotorDragCoefficient>2.419284e-05</rotorDragCoefficient>
-      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
-      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
-      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
-    </plugin>
-
-    <plugin name='bottom_motor' filename='libgazebo_motor_model.so'>
-      <robotNamespace/>
-      <jointName>rotor_1_joint</jointName>
-      <linkName>rotor_1</linkName>
-      <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
-      <motorNumber>3</motorNumber>
-      <turningDirection>cw</turningDirection>
-      <timeConstantUp>0.0125</timeConstantUp>
-      <timeConstantDown>0.025</timeConstantDown>
-      <maxRotVelocity>3000</maxRotVelocity>
-      <motorConstant>2.9265e-07</motorConstant>
-      <momentConstant>8.8e-3</momentConstant>
-      <rotorDragCoefficient>2.419284e-05</rotorDragCoefficient>
-      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
-      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
-      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
-    </plugin> -->
-
   </model>
+  
 </sdf>
