@@ -41,7 +41,7 @@
       <link_name>viper::rotor_0</link_name>
     </plugin>
 
-    <plugin name="rotor_1_blade_1" filename="libLiftDragPlugin.so">
+    <!-- <plugin name="rotor_1_blade_1" filename="libLiftDragPlugin.so">
       <a0>0.3</a0>
       <alpha_stall>1.4</alpha_stall>
       <cla>4.2500</cla>
@@ -73,7 +73,87 @@
       <forward>0 -1 0</forward>
       <upward>0 0 1</upward>
       <link_name>viper::rotor_1</link_name>
+    </plugin> -->
+
+    <plugin name="rotor_1_blade_1" filename="libLiftDragPlugin.so">
+      <a0>0.3</a0>
+      <alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>-0.025</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.002</area>
+      <air_density>1.2041</air_density>
+      <cp>0.084 0 0</cp>
+      <forward>0 -1 0</forward>
+      <upward>0 0 1</upward>
+      <link_name>viper::rotor_1</link_name>
     </plugin>
+    <plugin name="rotor_1_blade_2" filename="libLiftDragPlugin.so">
+      <a0>0.3</a0>
+      <alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>-0.025</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.002</area>
+      <air_density>1.2041</air_density>
+      <cp>-0.084 0 0</cp>
+      <forward>0 1 0</forward>
+      <upward>0 0 1</upward>
+      <link_name>viper::rotor_1</link_name>
+    </plugin>
+
+    <!-- The below plugin is only available for PX4 SITL -->
+    <!-- For Gazebo11, libLiftDragPlugin.so is only way to model the motor and thrust componenets -->
+
+    <!-- timeConstantUp is time taken for motor to accelerate and reach 63-70% of desired vel, fed to the first order filter -->
+    <!-- timeConstantDown is time taken for motor to decelerate and reach 63-70% of desired vel, is fed to the first order filter -->
+    <!-- maxRotVelocity ([rad/s]) -->
+    <!-- motorConstant ([rad/s]), Thrust of each motor = rotor_speed^2 * motorConstant -->
+    <!-- momentConstant ([m]) is used to calculate rotor torque magnitude -->
+    <!-- rotorDragCoefficient accounts for the H-force due to the perpendicular air velocity, resulting in drag -->
+    <!-- rollingMomentCoefficient accounts for torque from the motors themselves -->
+
+    <!-- <plugin name='top_motor' filename='libgazebo_motor_model.so'>
+      <robotNamespace/>
+      <jointName>viper::rotor_0_joint</jointName>
+      <linkName>viper::rotor_0</linkName>
+      <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
+      <motorNumber>5</motorNumber>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>3000</maxRotVelocity>
+      <motorConstant>2.9265e-07</motorConstant>
+      <momentConstant>8.8e-3</momentConstant>
+      <rotorDragCoefficient>2.419284e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+    </plugin>
+
+    <plugin name='bottom_motor' filename='libgazebo_motor_model.so'>
+      <robotNamespace/>
+      <jointName>viper::rotor_1_joint</jointName>
+      <linkName>viper::rotor_1</linkName>
+      <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
+      <motorNumber>6</motorNumber>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>3000</maxRotVelocity>
+      <motorConstant>2.9265e-07</motorConstant>
+      <momentConstant>8.8e-3</momentConstant>
+      <rotorDragCoefficient>2.419284e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+    </plugin> -->
 
     <plugin name="arducopter_plugin" filename="libArduPilotPlugin.so">
       <fdm_addr>127.0.0.1</fdm_addr>
@@ -88,7 +168,6 @@
       <imuName>viper_sitl::viper::viper/imu_link::imu_sensor</imuName>
       <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
 
-      <control channel="2">
       <!--
           incoming control command [0, 1]
           so offset it by 0 to get [0, 1]
@@ -96,6 +175,8 @@
           offset = 0
           multiplier = 838 max rpm / 1 = 838
         -->
+
+      <control channel="2">
         <type>VELOCITY</type>
         <offset>0</offset>
         <p_gain>0.20</p_gain>
@@ -106,7 +187,7 @@
         <cmd_max>2.5</cmd_max>
         <cmd_min>-2.5</cmd_min>
         <jointName>viper::rotor_0_joint</jointName>
-        <multiplier>-838</multiplier>
+        <multiplier>838</multiplier>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
 
@@ -121,7 +202,7 @@
         <cmd_max>2.5</cmd_max>
         <cmd_min>-2.5</cmd_min>
         <jointName>viper::rotor_1_joint</jointName>
-        <multiplier>838</multiplier>
+        <multiplier>-838</multiplier>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
 
